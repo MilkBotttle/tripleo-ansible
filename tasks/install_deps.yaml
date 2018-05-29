@@ -12,12 +12,10 @@
     use_regex: yes
   register: find_repo
 
-- name: Failed because you
-
 - name: Try download TripleO repo from internet
   script: >
     tools/get_tripleo_repo
-  when: find_repo.matched == 0 && offline_install == false
+  when: find_repo.matched == 0 and offline_install == false
 
 - name: Find download tripleo repo
   find:

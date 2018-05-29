@@ -50,6 +50,8 @@ undercloud_admin_vip: 192.168.24.3
 ###################################
 # Undercloud host config (required)
 ###################################
+# Offline
+offline_install: false
 
 # TripleO version
 tripleo_version: pike

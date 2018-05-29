@@ -40,7 +40,8 @@
     name: "/tmp/{{ python_tripleo_repo }}"
 
 - name: Enable TripleO repo
-  shell: sudo -E tripleo-repos -b "{{ tripleo_version }}" current ceph
+  shell: tripleo-repos -b "{{ tripleo_version }}" current ceph
+  become: true
   tags: tripleo-rpm
 
 - name: Install pkgs

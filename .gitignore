@@ -1,0 +1,4 @@
+*.swp
+scp.sh
+*.retry
+*.rpm

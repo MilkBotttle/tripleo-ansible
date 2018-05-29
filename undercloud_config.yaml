@@ -1,0 +1,38 @@
+---
+###################
+# Undercloud config
+###################
+# Undercloud used DNS servers (list value)
+undercloud_nameservers: 8.8.8.8,8.8.4.4
+# Undercloud used NTP servers (list value)
+undercloud_ntp_servers: 172.20.0.22
+# Undercloud PXE manged physical interface
+local_interface: eth1
+# Enable ironic auto discovery
+enable_node_discovery: true
+# Enable Undercloud debug
+undercloud_debug: true
+# Enable update pkgs before install
+undercloud_update_packages: true
+# Enable tempest
+enable_tempest: false
+# Enable telemetry
+enable_telemetry: false
+# Enable TripleO UI
+enable_ui: true
+# Enable ironic drivers (list value)
+enabled_drivers: pxe_ipmitool,pxe_ilo
+# Undercloud admin password
+undercloud_admin_password: password
+# TripleO version
+tripleo_version: pike
+# Undercloud fqdn to config /etc/hosts and hostnamectl
+undercloud_fqdn: undercloud.inwinstakc.com
+# Undercloud hostname to config /etc/hosts
+undercloud_hostname: undercloud
+# TripleO repo rpm file name.
+# Play will searh this file in rpm folder.
+# To get this file can use tools/get_tripleo_repo shell script
+# or manually download from https://trunk.rdoproject.org/centos7/current/
+# the filename is python2-tripleo-repos-<version>.el7.centos.noarch.rpm
+python_tripleo_repo: python2-tripleo-repos-0.0.1-0.20180418175107.ef4e12e.el7.centos.noarch.rpm

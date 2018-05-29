@@ -1,0 +1,19 @@
+---
+- name: Create undercloud.conf
+  template: 
+    src: ../templates/undercloud.conf.j2
+    dest: /home/stack/undercloud.conf
+    owner: stack
+    group: stack
+    mode: 0644
+  tags: create_config
+  
+- name : Install undercloud
+  shell: >
+    openstack undercloud install 
+    > undercloud-install-"{{ ansible_date_time.date }}".log 2>&1
+  become: true
+  become_user: stack
+  tags: install-undercloud
+
+

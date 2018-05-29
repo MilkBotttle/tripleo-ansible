@@ -1,0 +1,27 @@
+---
+- name: Update System
+  yum:
+    name: '*'
+    state: latest
+  tags: yum_update
+
+- name: Copy rpm to server
+  copy:
+    src: "../rpm/{{ python_tripleo_repo }}"
+    dest: "/tmp/{{ python_tripleo_repo }}"
+
+- name: Install TripleO repo
+  yum:
+    name: "/tmp/{{ python_tripleo_repo }}"
+
+- name: Enable TripleO repo
+  shell: sudo -E tripleo-repos -b "{{ tripleo_version }}" current ceph
+  tags: tripleo-rpm
+
+- name: Install pkgs
+  yum:
+    name:
+      - python-tripleoclient
+      - vim
+      - tmux
+  tags: install-pkgs

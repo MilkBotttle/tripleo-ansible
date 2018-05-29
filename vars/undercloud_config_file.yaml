@@ -1,0 +1,16 @@
+---
+# config variable for undercloud.conf templates
+undercloud_nameservers: 8.8.8.8
+undercloud_ntp_servers: 172.20.0.22
+#pxe manage interface
+local_interface: eno1
+# Enable ironic auto discovery feature
+enable_node_discovery: true
+undercloud_debug: true
+undercloud_update_packages: true
+enable_tempest: false
+enable_telemetry: false
+enable_ui: true
+enabled_drivers: pxe_ipmitool,pxe_drac,pxe_ilo
+undercloud_admin_password: password
+

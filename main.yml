@@ -1,0 +1,20 @@
+---
+- hosts: all
+  vars_files:
+    - vars/undercloud_install.yaml
+    - vars/undercloud_services.yaml
+  tasks:
+    - name: Create stack user
+      include_tasks: tasks/create_stack_user.yaml
+
+    - name: Config host
+      include_tasks: tasks/setup_hostname.yaml
+
+    - name: Install TripleO deps
+      include_tasks: tasks/install_deps.yaml
+    
+    - name: Deploy UnderCloud
+      include_tasks: tasks/install_undercloud.yaml
+    
+    - name: Verify UnderCloud
+      include_tasks: tasks/verify_undercloud.yaml

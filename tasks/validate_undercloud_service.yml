@@ -1,0 +1,11 @@
+- name: Check ironic services
+  systemd:
+    state: started
+    name: {{ item }}
+  with_items:
+    - openstack-ironic-conductor
+    - openstack-ironic-api
+    
+
+    
+

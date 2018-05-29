@@ -1,5 +1,5 @@
 ---
-unsercloud_services:
+undercloud_services:
   - openstack-swift-object-reconstructor.service
   - openstack-mistral-executor.service
   - openstack-swift-account-reaper.service

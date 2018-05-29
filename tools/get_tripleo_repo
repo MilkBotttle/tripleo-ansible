@@ -2,15 +2,15 @@
 
 get_tripleo_repo(){
   # Cameron.C: Download python2-tripleo-repos-<version>.el7.centos.noarch.rpm
-  echo "Get tripleO repo\n"
-  TRIPLEO_REPOS=$(curl $BASE | sed -n 's/.*href="\([^"]*\).*/\1/p' | grep python2-tripleo-repos- | grep el7.centos.noarch.rpm)
-  echo "\nTripleO repo is $TRIPLEO_REPOS\n"
+  echo "Get tripleO repo"
+  TRIPLEO_REPOS=$(curl $BASE | sed -n 's/.*href="\([^"]*\).*/\1/p' | grep '^python2-tripleo-repos-\w*.*\d*.centos.noarch.rpm$')
+  echo "TripleO repo is $TRIPLEO_REPOS"
 }
 
 download_repo(){
-  echo "Start Download repo\n"
-  curl $BASE$TRIPLEO_REPOS -o $TRIPLEO_REPOS
-  echo "Download complete\n"
+  echo "Start Download repo"
+  curl $BASE$TRIPLEO_REPOS -o /tmp/$TRIPLEO_REPOS
+  echo "Download complete"
 }
 
 BASE=https://trunk.rdoproject.org/centos7/current/

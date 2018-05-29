@@ -1,13 +1,16 @@
 ---
-###################
-# Undercloud config
-###################
+##############################
+# Undercloud config (required)
+##############################
+
 # Undercloud used DNS servers (list value)
 undercloud_nameservers: 8.8.8.8,8.8.4.4
 # Undercloud used NTP servers (list value)
 undercloud_ntp_servers: 172.20.0.22
 # Undercloud PXE manged physical interface
 local_interface: eth1
+# Undercloud local MTU
+local_mtu: 1500
 # Enable ironic auto discovery
 enable_node_discovery: true
 # Enable Undercloud debug
@@ -24,12 +27,43 @@ enable_ui: true
 enabled_drivers: pxe_ipmitool,pxe_ilo
 # Undercloud admin password
 undercloud_admin_password: password
+
+#############################
+# Undercloud config (options)
+#############################
+
+# Undercloud deploy overcloud node's dhcp config
+network_cidr: 192.168.24.0/24
+masquerade_network: 192.168.24.0/24
+local_ip: 192.168.24.1/24
+# The pxe gateway usually use Undercloud ip
+network_gateway: 192.168.24.1
+undercloud_public_host: 192.168.24.2
+undercloud_admin_host: 192.168.24.3
+dhcp_start: 192.168.24.4
+dhcp_end: 192.168.24.15
+#Inspection ip range use the same cidr with deploy format 
+inspection_iprange: 192.168.24.16,192.168.24.17
+undercloud_public_vip: 192.168.24.2
+undercloud_admin_vip: 192.168.24.3
+
+###################################
+# Undercloud host config (required)
+###################################
+# Offline
+offline_install: false
+
 # TripleO version
 tripleo_version: pike
+
+# Undercloud need config hostname to deploy
+# The /etc/hosts result: >
+# 127.0.0.1 undercloud undercloud.inwinstack.com
 # Undercloud fqdn to config /etc/hosts and hostnamectl
-undercloud_fqdn: undercloud.inwinstakc.com
+undercloud_fqdn: undercloud.inwinstak.com
 # Undercloud hostname to config /etc/hosts
 undercloud_hostname: undercloud
+
 # TripleO repo rpm file name.
 # Play will searh this file in rpm folder.
 # To get this file can use tools/get_tripleo_repo shell script

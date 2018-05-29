@@ -5,17 +5,43 @@
     state: latest
   tags: yum_update
 
-- name: Copy rpm to server
+- name: Try to find tripleo repo
+  find:
+    paths: /tmp
+    patterns: '^python2-tripleo-repos-\w*.*\d*.centos.noarch.rpm$'
+    use_regex: yes
+  register: find_repo
+
+- name: Try download TripleO repo from internet
+  script: >
+    tools/get_tripleo_repo
+  when: find_repo.matched == 0 and offline_install == false
+
+- name: Find download tripleo repo
+  find:
+    paths: /tmp
+    patterns: '^python2-tripleo-repos-\w*.*\d*.centos.noarch.rpm$'
+    use_regex: yes
+  register: find_repo
+  when: offline_install == false
+
+- name: TripleO repo is "{{ find_repo.files[0].path | basename }}"
+  set_fact:
+    repo_name: "{{ find_repo.files[0].path | basename }}"
+
+- name: Try copy rpm from local to remote server
   copy:
-    src: "../rpm/{{ python_tripleo_repo }}"
-    dest: "/tmp/{{ python_tripleo_repo }}"
+    src: "/tmp/{{ repo_name }}"
+    dest: "/tmp/{{ repo_name }}"
+  when: find_repo.matched == 1
 
 - name: Install TripleO repo
   yum:
     name: "/tmp/{{ python_tripleo_repo }}"
 
 - name: Enable TripleO repo
-  shell: sudo -E tripleo-repos -b "{{ tripleo_version }}" current ceph
+  shell: tripleo-repos -b "{{ tripleo_version }}" current ceph
+  become: true
   tags: tripleo-rpm
 
 - name: Install pkgs

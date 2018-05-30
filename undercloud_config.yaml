@@ -3,49 +3,86 @@
 # Undercloud config (required)
 ##############################
 
-# Undercloud used DNS servers (list value)
+# DNS nameserver(s) to use for the undercloud node. (list value)
 undercloud_nameservers: 8.8.8.8,8.8.4.4
-# Undercloud used NTP servers (list value)
+
+# List of ntp servers to use. (list value) 
 undercloud_ntp_servers: 172.20.0.22
-# Undercloud PXE manged physical interface
+
+# Network interface on the Undercloud that will be handling the PXE
+# boots and DHCP for Overcloud instances. (string value)
 local_interface: eth1
-# Undercloud local MTU
+
+# MTU to use for the local_interface. (integer value)
 local_mtu: 1500
-# Enable ironic auto discovery
+
+# Makes ironic-inspector enroll any unknown node that PXE-boots
+# introspection ramdisk in Ironic. By default, the "fake" driver is
+# used for new nodes (it is automatically enabled when this option is
+# set to True). Set discovery_default_driver to override.
+# Introspection rules can also be used to specify driver information
+# for newly enrolled nodes. (boolean value)
 enable_node_discovery: true
+
 # Enable Undercloud debug
 undercloud_debug: true
-# Enable update pkgs before install
+
+# Whether to update packages during the Undercloud install. (boolean
+# value)
 undercloud_update_packages: true
-# Enable tempest
+
+# Whether to install Tempest in the Undercloud. (boolean value)
 enable_tempest: false
-# Enable telemetry
+
+# Whether to install Telemetry services (ceilometer, gnocchi, aodh,
+# panko ) in the Undercloud. (boolean value)
 enable_telemetry: false
-# Enable TripleO UI
-enable_ui: true
-# Enable ironic drivers (list value)
+
+# Whether to install the TripleO UI. (boolean value)
+enable_ui: false
+
+# List of enabled bare metal drivers. (list value)
 enabled_drivers: pxe_ipmitool,pxe_ilo
-# Undercloud admin password
+
+# Keystone admin password. If left unset, one will be automatically
+# generated. (string value)
 undercloud_admin_password: password
 
 #############################
 # Undercloud config (options)
 #############################
 
-# Undercloud deploy overcloud node's dhcp config
+# Network CIDR for the Neutron-managed network for Overcloud
+# instances. This should be the subnet used for PXE booting. (string
+# value)
 network_cidr: 192.168.24.0/24
+
+# Network that will be masqueraded for external access, if required.
+# This should be the subnet used for PXE booting. (string value)
 masquerade_network: 192.168.24.0/24
+
+# IP information for the interface on the Undercloud that will be
+# handling the PXE boots and DHCP for Overcloud instances.  The IP
+# portion of the value will be assigned to the network interface
+# defined by local_interface, with the netmask defined by the prefix
+# portion of the value. (string value)
 local_ip: 192.168.24.1/24
-# The pxe gateway usually use Undercloud ip
+
+# Network gateway for the Neutron-managed network for Overcloud
+# instances. This should match the local_ip above when using
+# masquerading. (string value)
 network_gateway: 192.168.24.1
-undercloud_public_host: 192.168.24.2
-undercloud_admin_host: 192.168.24.3
+
+# Start of DHCP allocation range for PXE and DHCP of Overcloud
+# instances. (string value)
 dhcp_start: 192.168.24.4
+
+# End of DHCP allocation range for PXE and DHCP of Overcloud
+# instances. (string value)
 dhcp_end: 192.168.24.15
+
 #Inspection ip range use the same cidr with deploy format 
 inspection_iprange: 192.168.24.16,192.168.24.17
-undercloud_public_vip: 192.168.24.2
-undercloud_admin_vip: 192.168.24.3
 
 ###################################
 # Undercloud host config (required)
@@ -63,10 +100,3 @@ tripleo_version: pike
 undercloud_fqdn: undercloud.inwinstak.com
 # Undercloud hostname to config /etc/hosts
 undercloud_hostname: undercloud
-
-# TripleO repo rpm file name.
-# Play will searh this file in rpm folder.
-# To get this file can use tools/get_tripleo_repo shell script
-# or manually download from https://trunk.rdoproject.org/centos7/current/
-# the filename is python2-tripleo-repos-<version>.el7.centos.noarch.rpm
-python_tripleo_repo: python2-tripleo-repos-0.0.1-0.20180418175107.ef4e12e.el7.centos.noarch.rpm

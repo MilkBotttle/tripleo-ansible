@@ -1,22 +1,9 @@
 ---
-- name: Update System
-  yum:
-    name: '*'
-    state: latest
-  tags: yum_update
-
-- name: Try to find tripleo repo
-  find:
-    paths: /tmp
-    patterns: '^python2-tripleo-repos-\w*.*\d*.centos.noarch.rpm$'
-    use_regex: yes
-  register: find_repo
-  when: offline_install == false
-
 - name: Try download TripleO repo from internet
   script: >
     tools/get_tripleo_repo
   when: offline_install == false
+  tags: tripleo-rpm
 
 - name: Find download tripleo repo
   find:
@@ -25,33 +12,41 @@
     use_regex: yes
   register: find_repo
   when: offline_install == false
+  tags: tripleo-rpm
 
-- name: TripleO repo is "{{ find_repo.files[0].path | basename }}"
+- name: TripleO repo find "{{ find_repo.files[0].path | basename }}"
   set_fact:
     repo_name: "{{ find_repo.files[0].path | basename }}"
   when: offline_install == false
-
-- name: Try copy rpm from local to remote server
-  copy:
-    src: "/tmp/{{ repo_name }}"
-    dest: "/tmp/{{ repo_name }}"
-  when: offline_install == false
+  tags: tripleo-rpm
 
 - name: Install TripleO repo
   yum:
     name: "/tmp/{{ python_tripleo_repo }}"
   when: offline_install == false
 
-- name: Enable TripleO repo
+- name: Enable TripleO repo "{{ tripleo_version }}"
   shell: tripleo-repos -b "{{ tripleo_version }}" current ceph
   become: true
   when: offline_install == false
   tags: tripleo-rpm
 
-- name: Install pkgs
+- name: Install tripleo client
   yum:
     name:
       - python-tripleoclient
-      - vim
-      - tmux
+  tags: install-pkgs
+
+- name: Install ceph-ansible for external ceph
+  yum:
+    name:
+      - ceph-ansible
+  when: external_ceph == true
+  tags: install-pkgs
+
+- name: Install Extra pkgs
+  yum:
+    name: "{{ item }}"
+  with_items: "{{ extra_pkgs }}"
+  when: extra_pkgs | length > 0
   tags: install-pkgs

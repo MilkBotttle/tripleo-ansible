@@ -90,6 +90,10 @@ inspection_iprange: 192.168.24.16,192.168.24.17
 # Offline
 offline_install: false
 
+# Undercloud will install ceph-ansible for use external ceph
+# (boolean)
+external_ceph: false
+
 # TripleO version
 tripleo_version: pike
 
@@ -100,3 +104,11 @@ tripleo_version: pike
 undercloud_fqdn: undercloud.inwinstak.com
 # Undercloud hostname to config /etc/hosts
 undercloud_hostname: undercloud
+
+#############################################
+# Undercloud install extra packages (options)
+#############################################
+
+# Install extra packages (list value)
+# eg. extra_pkgs: [vim, iperf3, sl]
+extra_pkgs: [vim, tmux]

@@ -11,11 +11,12 @@
     patterns: '^python2-tripleo-repos-\w*.*\d*.centos.noarch.rpm$'
     use_regex: yes
   register: find_repo
+  when: offline_install == false
 
 - name: Try download TripleO repo from internet
   script: >
     tools/get_tripleo_repo
-  when: find_repo.matched == 0 and offline_install == false
+  when: offline_install == false
 
 - name: Find download tripleo repo
   find:
@@ -28,20 +29,23 @@
 - name: TripleO repo is "{{ find_repo.files[0].path | basename }}"
   set_fact:
     repo_name: "{{ find_repo.files[0].path | basename }}"
+  when: offline_install == false
 
 - name: Try copy rpm from local to remote server
   copy:
     src: "/tmp/{{ repo_name }}"
     dest: "/tmp/{{ repo_name }}"
-  when: find_repo.matched == 1
+  when: offline_install == false
 
 - name: Install TripleO repo
   yum:
     name: "/tmp/{{ python_tripleo_repo }}"
+  when: offline_install == false
 
 - name: Enable TripleO repo
   shell: tripleo-repos -b "{{ tripleo_version }}" current ceph
   become: true
+  when: offline_install == false
   tags: tripleo-rpm
 
 - name: Install pkgs

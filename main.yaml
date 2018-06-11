@@ -4,6 +4,9 @@
     - vars/undercloud_install.yaml
     - vars/undercloud_services.yaml
   tasks:
+    - name: Check Hardware
+      import_tasks: tasks/check_prepared.yaml
+
     - name: Create stack user
       import_tasks: tasks/create_stack_user.yaml
 

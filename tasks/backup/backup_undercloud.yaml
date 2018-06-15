@@ -1,0 +1,34 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Init backup args
+      set_fact:
+        backup_args: ''
+      tags: backup_undercloud
+    
+    - name: Try NTP time sync
+      shell: >
+        systemctl stop ntpd
+        ntpdate pool.ntp.org
+        systemctl start ntpd
+      register: ntp_fail
+      tags: backup_undercloud, time_sync
+
+    - name: Add file to backup
+      set_fact:
+        backup_args: "{{ backup_args }} --add-path {{item}}"
+      with_items: "{{add_files_to_backup}}"
+      when: add_files_to_backup is defined
+      tags: backup_undercloud
+      
+    - name: Exclude file not backup
+      set_fact:
+        backup_args: "{{ backup_args }} --exclude-path {{item}}"
+      with_items: "{{ exclude_files_to_backup }}"
+      when: exclude_files_to_backup is defined
+      tags: backup_undercloud
+
+    - name: Backup undercloud
+      shell: >
+        source stackrc; openstack undercloud backup "{{ backup_args }}"
+      tags: backup_undercloud

@@ -29,7 +29,7 @@ undercloud_debug: true
 
 # Whether to update packages during the Undercloud install. (boolean
 # value)
-undercloud_update_packages: true
+undercloud_update_packages: false
 
 # Whether to install Tempest in the Undercloud. (boolean value)
 enable_tempest: false
@@ -75,20 +75,24 @@ network_gateway: 192.168.24.1
 
 # Start of DHCP allocation range for PXE and DHCP of Overcloud
 # instances. (string value)
-dhcp_start: 192.168.24.4
+dhcp_start: 192.168.24.5
 
 # End of DHCP allocation range for PXE and DHCP of Overcloud
 # instances. (string value)
-dhcp_end: 192.168.24.15
+dhcp_end: 192.168.24.25
 
 #Inspection ip range use the same cidr with deploy format 
-inspection_iprange: 192.168.24.16,192.168.24.17
+inspection_iprange: 192.168.24.100,192.168.24.120
 
 ###################################
 # Undercloud host config (required)
 ###################################
 # Offline
 offline_install: false
+
+# Undercloud will install ceph-ansible for use external ceph
+# (boolean)
+external_ceph: false
 
 # TripleO version
 tripleo_version: pike
@@ -100,3 +104,11 @@ tripleo_version: pike
 undercloud_fqdn: undercloud.inwinstak.com
 # Undercloud hostname to config /etc/hosts
 undercloud_hostname: undercloud
+
+#############################################
+# Undercloud install extra packages (options)
+#############################################
+
+# Install extra packages (list value)
+# eg. extra_pkgs: [vim, iperf3, sl]
+extra_pkgs: [vim, tmux]

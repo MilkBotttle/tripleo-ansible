@@ -1,3 +1,7 @@
 ---
-- name: check rpm exist
+- name: Check undercloud memory requirement
+  assert:
+    that:
+      - ansible_memtotal_mb >= 8192
+    msg: "Undercloud  install reqire at least 8192MB RAM"
   

@@ -1,0 +1,47 @@
+---
+- name: Create tmplorary folders
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - /tmp/mysql_backup
+    - /tmp/filesystem_backup
+
+- name: Get database password
+  shell: >
+    cat /etc/puppet/hieradata/service_configs.json | grep mysql | grep root_password | awk -F": " '{print $2}' | awk -F"\"" '{print $2}'
+  register: db_password
+
+- name: Backup openstack db
+  script: ../scripts/backup_openstack_db.sh 'openstack' "{{ db_password.stdout }}"
+
+- name: Backup user and promission
+  script: ../scripts/backup_openstack_db.sh 'user_and_promission' "{{ db_password.stdout }}"  
+
+- name: Get redis ip
+  shell: >
+    grep -A1 'listen redis' /etc/haproxy/haproxy.cfg | grep bind |
+    awk '{print $2}' | awk -F":" '{print $1}'
+  register: redis_ip
+
+- name: Get redis password
+  shell: >
+    cat /etc/redis.conf | grep masterauth | grep -v \# | awk '{print $2}'
+  register: redis_password
+
+- name: Backup redis
+  shell: >
+    redis-cli -a "{{ redis_password }}" -h "{{ redis_ip }}" bgsave
+
+- name: Backup filesystem
+  script: ../scripts/backup_filesystem.sh
+
+- name: Compress all backup files
+  archive:
+    format: "{{ backup_format }}"
+    path:
+      - /tmp/mysql_backup
+      - /tmp/filesystem_backup
+      - /var/lib/redis/dump.rdb
+    dest: "{{ backup_archive_dest }}"

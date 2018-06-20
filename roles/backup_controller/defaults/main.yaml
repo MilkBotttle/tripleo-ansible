@@ -1,0 +1,9 @@
+---
+# defaults file for backup_controller
+
+# A path include to save the backupfile
+backup_archive_dest: "/tmp/controller-backup-{{ ansible_date_time.date }}.tar"
+
+# Archive file format
+backup_format: tar
+

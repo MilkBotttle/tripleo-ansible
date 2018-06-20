@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Ensure provide controller list
+      fail:
+        msg: "In order to backup controller, controller_list must provide."
+      when: controller_list is not defined or "{{ controller_list | length }}" <= 0
+      tags: always
+    
+      

@@ -12,3 +12,18 @@ Pike
 # Quickstart
 - Edit back list include file you want to backup
 - `ansible-playbook -e @bckup_list.yaml backup_undercloud.yaml`
+
+---
+# Backup overcloud
+Use backup overcloud role backup openstack controll plane data,
+then copy to local.
+
+# Version
+Pike
+
+# Requirement
+- NTP
+- Ansible >= 2.4.1
+
+# Quickstart
+`ansibe-playbook backup_overcloud.yaml -i controller-0,`

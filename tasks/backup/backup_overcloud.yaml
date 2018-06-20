@@ -1,10 +1,15 @@
 ---
-- hosts: localhost
+- hosts: controller
   tasks:
-    - name: Ensure provide controller list
-      fail:
-        msg: "In order to backup controller, controller_list must provide."
-      when: controller_list is not defined or "{{ controller_list | length }}" <= 0
-      tags: always
+    - name: backup overcloud
+      vars:
+        backup_archive_dest: /tmp/overcloud-backup.tar
+      roles:
+        - backup_controller
+
+    - name: Fetch backup archive
+      fetch:
+        src: /tmp/overcloud-backup.tar
+        dest: /home/overcloud-backup.tar
     
       

@@ -1,11 +1,14 @@
 # Backup undercloud
-Run openstack undercloud backup
+Archive database data and file, then save in object storage.
+
 # Version
 Pike
-# Vars
-- `add_files_to_path` : Add file in backup.(list value)
-- `exclude_files_to_path`: Exclude file not backup (list value)
+
+# Requirement
+- NTP
+- Undercloud
+- Ansible >= 2.4.1
+
 # Quickstart
-ansible-playbook --extra-vars '{add_files_to_backup: ['/var/log','/etc/']}' \
-                 --extra-vars '{exclude_files_to_backup: ['/home/stack']}' \
-                 backup_undercloud.yaml
+- Edit back list include file you want to backup
+- `ansible-playbook -e @bckup_list.yaml backup_undercloud.yaml`

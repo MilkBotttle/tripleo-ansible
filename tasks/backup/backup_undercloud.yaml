@@ -4,31 +4,46 @@
     - name: Init backup args
       set_fact:
         backup_args: ''
-      tags: backup_undercloud
-    
-    - name: Try NTP time sync
+        backup_timestamp: "UC-backup-{{ ansible_date_time.date }}"
+        dumpsql_path: "/tmp/undercloud-all-database-{{ ansible_date_time.date }}.sql"
+      tags: backup_undercloud, always
+
+    - name: NTP time sync
       shell: >
-        systemctl stop ntpd
-        ntpdate pool.ntp.org
+        systemctl stop ntpd;
+        ntpdate pool.ntp.org;
         systemctl start ntpd
-      register: ntp_fail
       tags: backup_undercloud, time_sync
 
-    - name: Add file to backup
-      set_fact:
-        backup_args: "{{ backup_args }} --add-path {{item}}"
-      with_items: "{{add_files_to_backup}}"
-      when: add_files_to_backup is defined
-      tags: backup_undercloud
-      
-    - name: Exclude file not backup
-      set_fact:
-        backup_args: "{{ backup_args }} --exclude-path {{item}}"
-      with_items: "{{ exclude_files_to_backup }}"
-      when: exclude_files_to_backup is defined
-      tags: backup_undercloud
+    - name: Backup database
+      mysql_db:
+        name: all
+        state: dump
+        single_transaction: yes
+        target: /tmp/undercloud-all-database.sql
+      become: true
 
-    - name: Backup undercloud
+    - name: Compress all backup files
+      archive:
+        path: "{{ include_files_path }} + [ '{{ dumpsql_path }}' ]"
+        dest: "/tmp/{{ backup_timestamp }}.tar.gz"
+
+    - name: Create object container
       shell: >
-        source stackrc; openstack undercloud backup "{{ backup_args }}"
-      tags: backup_undercloud
+        source ~/stackrc;
+        openstack container create "{{ backup_timestamp }}"
+      tags: save_in_swift
+
+    - name:  Save in container
+      shell: >
+        source ~/stackrc;
+        openstack object create --name "{{ backup_timestamp }}" "{{ backup_timestamp }}" "/tmp/{{ backup_timestamp }}.tar.gz"
+      become: true
+      become_user: stack
+      tags: save_in_swift
+
+    - name: Clean up tmp files
+      shell: >
+        rm -rf "/tmp/{{ backup_timestamp }}.tar.gz"
+        rm -rf "{{ dumpsql_path }}"
+      tags: never

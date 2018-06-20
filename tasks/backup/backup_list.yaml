@@ -1,0 +1,11 @@
+include_files_path:
+  - /home/stack
+  - /etc
+  - /var/log
+  - /root
+  - /var/lib/glance
+  - /var/lib/docker
+  - /var/lib/certmonger
+  - /var/lib/registry
+  - /srv/node
+  - /home/stack

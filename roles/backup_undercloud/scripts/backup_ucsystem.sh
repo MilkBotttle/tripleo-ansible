@@ -1,7 +1,7 @@
 #!/bin/bash
 
 tar --ignore-failed-read \
-    -zcvf /tmp/UC_backup-`date '+%Y-%m-%d-%H-%M-%S'`.tar.gz \
+    -zcf /tmp/UC_backup-`date '+%Y-%m-%d-%H-%M-%S'`.tar.gz \
     /tmp/undercloud-all-database.sql \
     /home/stack \
     /etc \

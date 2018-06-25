@@ -1,6 +1,6 @@
 #!/bin/bash
 
-tar --ignore-failed-read \
+tar --ignore-failed-read --warning=no-file-changed \
     -zcvf /tmp/filesystem_backup/fs_backup-`date '+%Y-%m-%d-%H-%M-%S'`.tar.gz \
     /etc/nova \
     /var/log/nova \

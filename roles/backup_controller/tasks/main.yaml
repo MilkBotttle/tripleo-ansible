@@ -15,9 +15,11 @@
 
 - name: Backup openstack db
   script: ../scripts/backup_openstack_db.sh 'openstack' "{{ db_password.stdout }}"
+  become: true
 
 - name: Backup user and promission
   script: ../scripts/backup_openstack_db.sh 'user_and_promission' "{{ db_password.stdout }}"  
+  become: true
 
 - name: Get redis ip
   shell: >
@@ -32,16 +34,25 @@
 
 - name: Backup redis
   shell: >
-    redis-cli -a "{{ redis_password }}" -h "{{ redis_ip }}" bgsave
-
+    redis-cli -a "{{ redis_password.stdout }}" -h "{{ redis_ip.stdout }}" bgsave
+# shell script
 - name: Backup filesystem
   script: ../scripts/backup_filesystem.sh
+  become:true
+  tags: never
 
+# module
+- name: Backup filesystem
+  archive:
+    path: "{{ archive_files_path }}"
+    exclude_path: "{{exclude_files_path }}"
+    dest: "/tmp/filesystem_backup/OC-filesystem-backup-{{ ansible_date_time.date}}.tar.gz"
+      
 - name: Compress all backup files
   archive:
-    format: "{{ backup_format }}"
     path:
       - /tmp/mysql_backup
       - /tmp/filesystem_backup
       - /var/lib/redis/dump.rdb
     dest: "{{ backup_archive_dest }}"
+  tags: archive_all_files

@@ -9,9 +9,6 @@ archive_files_path:
   - /etc/nova
   - /var/log/nova
   - /var/lib/nova
-
-exclude_files_path:
-  - /var/lib/nova/instances
   - /etc/glance
   - /var/log/glance
   - /var/lib/glance
@@ -51,3 +48,6 @@ exclude_files_path:
   - /var/log/panko
   - /etc/ceilometer
   - /var/log/ceilometer
+
+exclude_files_path:
+  - /var/lib/nova/instances

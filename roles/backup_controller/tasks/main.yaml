@@ -14,7 +14,7 @@
   register: db_password
 
 - name: Backup openstack db
-  script: ../scripts/backup_openstack_db.sh 'openstack' "{{ db_password.stdout }}"
+  script: ../files/backup_openstack_db.sh 'openstack' "{{ db_password.stdout }}"
   become: true
 
 - name: Backup user and promission
@@ -37,7 +37,7 @@
     redis-cli -a "{{ redis_password.stdout }}" -h "{{ redis_ip.stdout }}" bgsave
 # shell script
 - name: Backup filesystem
-  script: ../scripts/backup_filesystem.sh
+  script: ../files/backup_filesystem.sh
   become:true
   tags: never
 
@@ -46,7 +46,7 @@
   archive:
     path: "{{ archive_files_path }}"
     exclude_path: "{{exclude_files_path }}"
-    dest: "/tmp/filesystem_backup/OC-filesystem-backup-{{ ansible_date_time.date}}.tar.gz"
+    dest: /tmp/filesystem_backup/OC-filesystem-backup-"{{ ansible_date_time.date}}".tar.gz
       
 - name: Compress all backup files
   archive:

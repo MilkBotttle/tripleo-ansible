@@ -14,6 +14,6 @@
       fetch:
         src: "/tmp/overcloud-backup-{{ ansible_date_time.date }}.tar.gz"
         dest: "/tmp/overcloud-backup-{{ ansible_date_time.date }}.tar.gz"
-      flat: yes
+        flat: yes
 
       

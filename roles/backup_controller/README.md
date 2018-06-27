@@ -1,5 +1,6 @@
 # Backup controller database and filesystem
 Use ansible to backup database and filesystem.
+Ansible play task on one host and archive backup files.
 
 # Requirement
 - Ansible >= 2.4.1
@@ -9,8 +10,7 @@ Use ansible to backup database and filesystem.
 TripleO - Pike
 
 # Role Variables
-`backup_archive_dest`: A path include to save the backupfile (Default: /tmp/overcloud-backup-{{date}}.tar)
-`backup_format`: A ansible support type to archive the files, support type - bz2, gz, tar, zip (Default: tar)
+`backup_archive_dest`: A path include to save the backupfile (Default: /tmp/overcloud-backup-{{date}}.tar.gz)
 
 #How to use this role
 Example playbook
@@ -20,7 +20,6 @@ Example playbook
   hosts: controller-0
   vars:
     backup_archive_dest: /root/overcloud-controll-plane.gz
-    backup_format: gz
   roles:
     - backup_controller
 ```

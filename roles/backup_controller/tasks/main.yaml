@@ -55,4 +55,5 @@
       - /tmp/filesystem_backup
       - /var/lib/redis/dump.rdb
     dest: "{{ backup_archive_dest }}"
+    remove: yes
   tags: archive_all_files

@@ -19,3 +19,7 @@ Use tools/get_tripleo_repo shell script.
 Play at localhost as below:
 1. Configure the `undercloud_config.yaml`.
 2. Install undercloud with root user `ansible-playbook -e "@undercloud_config.yaml" main.yaml`.
+
+# Ansible backup controller
+Play run on a controller:
+`ansible-playbook -i [controller-hostname/ip], backup_overcloud.yaml`

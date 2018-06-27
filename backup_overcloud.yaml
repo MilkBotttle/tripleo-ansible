@@ -1,0 +1,19 @@
+---
+- name: backup overcloud
+  hosts: all
+  gather_facts: false
+  vars:
+    backup_archive_dest: "/tmp/overcloud-backup-{{ ansible_date_time.date }}.tar.gz"
+  roles:
+    - backup_controller
+
+- hosts:
+  gather_facts: false
+  tasks:
+    - name: Fetch backup archive
+      fetch:
+        src: "/tmp/overcloud-backup-{{ ansible_date_time.date }}.tar.gz"
+        dest: "/tmp/overcloud-backup-{{ ansible_date_time.date }}.tar.gz"
+        flat: yes
+
+      

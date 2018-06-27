@@ -1,0 +1,59 @@
+---
+- name: Create tmplorary folders
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - /tmp/mysql_backup
+    - /tmp/filesystem_backup
+
+- name: Get database password
+  shell: >
+    cat /etc/puppet/hieradata/service_configs.json | grep mysql | grep root_password | awk -F": " '{print $2}' | awk -F"\"" '{print $2}'
+  register: db_password
+
+- name: Backup openstack db
+  script: ../files/backup_openstack_db.sh 'openstack' "{{ db_password.stdout }}"
+  become: true
+
+- name: Backup user and promission
+  script: ../scripts/backup_openstack_db.sh 'user_and_promission' "{{ db_password.stdout }}"  
+  become: true
+
+- name: Get redis ip
+  shell: >
+    grep -A1 'listen redis' /etc/haproxy/haproxy.cfg | grep bind |
+    awk '{print $2}' | awk -F":" '{print $1}'
+  register: redis_ip
+
+- name: Get redis password
+  shell: >
+    cat /etc/redis.conf | grep masterauth | grep -v \# | awk '{print $2}'
+  register: redis_password
+
+- name: Backup redis
+  shell: >
+    redis-cli -a "{{ redis_password.stdout }}" -h "{{ redis_ip.stdout }}" bgsave
+# shell script
+- name: Backup filesystem
+  script: ../files/backup_filesystem.sh
+  become:true
+  tags: never
+
+# module
+- name: Backup filesystem
+  archive:
+    path: "{{ archive_files_path }}"
+    exclude_path: "{{exclude_files_path }}"
+    dest: /tmp/filesystem_backup/OC-filesystem-backup-"{{ ansible_date_time.date}}".tar.gz
+      
+- name: Compress all backup files
+  archive:
+    path:
+      - /tmp/mysql_backup
+      - /tmp/filesystem_backup
+      - /var/lib/redis/dump.rdb
+    dest: "{{ backup_archive_dest }}"
+    remove: yes
+  tags: archive_all_files

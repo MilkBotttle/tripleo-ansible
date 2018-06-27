@@ -1,0 +1,21 @@
+---
+- name: NTP time sync
+  shell: >
+    systemctl stop ntpd;
+    ntpdate pool.ntp.org;
+    systemctl start ntpd
+  tags: backup_undercloud, time_sync
+
+- name: Backup database
+  mysql_db:
+    name: all
+    state: dump
+    single_transaction: yes
+    target: /tmp/undercloud-all-database.sql
+  become: true
+
+- name: Compress all backup files
+  archive:
+    path: "{{ archive_files_path }}"    
+    exclude_path: "{{ exclude_files_path }}"
+    dest: "{{ backup_archive_dest }}"

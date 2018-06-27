@@ -1,0 +1,6 @@
+---
+- hosts: all
+  tasks:
+    - name: backup undercloud
+      roles:
+        - backup_undercloud

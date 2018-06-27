@@ -1,0 +1,16 @@
+backup_archive_dest: "/tmp/UC_backup-{{ ansible_date_time.date }}.tar.gz"
+
+archive_files_path:
+  - /tmp/undercloud-all-database.sql
+  - /home/stack
+  - /etc
+  - /var/log
+  - /root
+  - /var/lib/glance
+  - /var/lib/docker
+  - /var/lib/certmonger
+  - /var/lib/registry
+  - /srv/node
+  - /home/stack
+
+exclude_files_path: []

@@ -18,6 +18,3 @@
     
     - name: Deploy UnderCloud
       import_tasks: tasks/install_undercloud.yaml
-    
-    - name: Verify UnderCloud
-      import_tasks: tasks/verify_undercloud.yaml

@@ -1,12 +1,15 @@
 ---
-- name: Create undercloud.conf
-  template: 
-    src: ../templates/undercloud.conf.j2
+- name: Copy over undercloud.conf
+  merge_configs:
+    sources: 
+      - "../templates/undercloud.conf.j2"
+      - "../templates/undercloud.conf.sample"
+      - "../override_undercloud.conf"
     dest: /home/stack/undercloud.conf
     owner: stack
     group: stack
     mode: 0644
-  tags: create_config
+  tags: create-config
   
 - name : Install undercloud
   shell: >

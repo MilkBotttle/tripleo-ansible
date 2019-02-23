@@ -3,3 +3,4 @@
 *.rpm
 *.pyc
 *.log
+ansible-errors.json

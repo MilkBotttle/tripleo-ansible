@@ -16,8 +16,8 @@ tripleo_version: rocky
 # The /etc/hosts result: >
 # 127.0.0.1 undercloud undercloud.inwinstack.com
 # Undercloud fqdn to config /etc/hosts and hostnamectl
-undercloud_fqdn: pcuc.inwinstak.com
+undercloud_fqdn: ucpc.inwinstak.com
 
 # Undercloud hostname to config /etc/hosts
-undercloud_hostname: pcuc
+undercloud_hostname: ucpc
 

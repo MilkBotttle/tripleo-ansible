@@ -3,6 +3,7 @@
   yum:
     list=python2-tripleo-repos
   register: pkg
+  tags: tripleo-rpm
 
 - name: Install TripleO repo
   script: >
@@ -27,11 +28,4 @@
     name:
       - ceph-ansible
   when: external_ceph == true
-  tags: install-pkgs
-
-- name: Install Extra pkgs
-  yum:
-    name: "{{ item }}"
-  with_items: "{{ extra_pkgs }}"
-  when: extra_pkgs | length > 0
   tags: install-pkgs

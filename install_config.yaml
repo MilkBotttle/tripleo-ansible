@@ -1,0 +1,23 @@
+---
+###################################
+# Undercloud host config (required)
+###################################
+# Offline
+offline_install: false
+
+# Undercloud will install ceph-ansible for over clouduse external ceph
+# (boolean)
+external_ceph: false
+
+# TripleO version
+tripleo_version: rocky
+
+# Undercloud need config hostname to deploy
+# The /etc/hosts result: >
+# 127.0.0.1 undercloud undercloud.inwinstack.com
+# Undercloud fqdn to config /etc/hosts and hostnamectl
+undercloud_fqdn: pcuc.inwinstak.com
+
+# Undercloud hostname to config /etc/hosts
+undercloud_hostname: pcuc
+

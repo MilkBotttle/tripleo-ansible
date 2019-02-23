@@ -2,14 +2,17 @@
 - hosts: localhost
   vars_files:
     - vars/undercloud_install.yaml
-    - vars/undercloud_services.yaml
   tasks:
+    - name: Find out playbooks path
+      shell: pwd
+      register: playbook_path_output
+      tags: create-config
     - name: Check Hardware
       import_tasks: tasks/check_prepared.yaml
-
+    
     - name: Create stack user
       import_tasks: tasks/create_stack_user.yaml
-
+    
     - name: Config host
       import_tasks: tasks/setup_hostname.yaml
 

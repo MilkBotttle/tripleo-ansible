@@ -2,9 +2,8 @@
 - name: Copy over undercloud.conf
   merge_configs:
     sources: 
-      - "../templates/undercloud.conf.j2"
-      - "../templates/undercloud.conf.sample"
-      - "../override_undercloud.conf"
+      - "{{ playbook_path_output.stdout }}/templates/undercloud.conf.default"
+      - "{{ playbook_path_output.stdout }}/override_undercloud.conf"
     dest: /home/stack/undercloud.conf
     owner: stack
     group: stack

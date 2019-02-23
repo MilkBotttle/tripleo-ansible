@@ -7,7 +7,7 @@
 - name: Config /etc/hosts
   lineinfile:
     dest: /etc/hosts
-    line: "127.0.0.1 {{ undercloud_fqdn }} {{ undercloud_hostname }}"
+    line: "127.0.0.1 {{ undercloud_hostname }} {{ undercloud_fqdn }}"
     insertafter: EOF
     state: present
   tags: setup

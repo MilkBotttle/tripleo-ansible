@@ -1,4 +1,5 @@
 *.swp
-scp.sh
 *.retry
 *.rpm
+*.pyc
+*.log

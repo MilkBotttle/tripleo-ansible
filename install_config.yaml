@@ -1,11 +1,11 @@
 ---
-###################################
-# Undercloud host config (required)
-###################################
+######################################
+# Undercloud install config (required)
+######################################
 # Offline
 offline_install: false
 
-# Undercloud will install ceph-ansible for over clouduse external ceph
+# Undercloud will install ceph-ansible for overcloud use external ceph
 # (boolean)
 external_ceph: false
 

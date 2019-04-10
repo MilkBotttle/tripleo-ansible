@@ -98,7 +98,7 @@
 #enable_tempest = true
 
 # Whether to install the TripleO UI. (boolean value)
-#enable_ui = true
+enable_ui = false
 
 # Whether to install requirements to run the TripleO validations.
 # (boolean value)

@@ -10,22 +10,38 @@
     tools/get_tripleo_repo
   when: offline_install == false and pkg.results|selectattr("yumstate", "match", "installed")|list|length == 0
   tags: tripleo-rpm
-  
+
 - name: Enable TripleO repo "{{ tripleo_version }}"
   shell: tripleo-repos -b "{{ tripleo_version }}" current ceph
   become: true
   when: offline_install == false
   tags: tripleo-rpm
 
-- name: Install tripleo client
-  yum:
-    name:
-      - python-tripleoclient
-  tags: install-pkgs
+- name: Check for updates (yum)
+  yum: list= list=updates update_cache=true
+  register: yumoutput
 
-- name: Install ceph-ansible for external ceph
-  yum:
-    name:
-      - ceph-ansible
-  when: external_ceph == true
-  tags: install-pkgs
+- block:
+    - name: Update system
+      yum:
+        name: '*'
+
+    - debug:
+        msg="System update complete. Please reboot the system for updated."
+  when: yumoutput.results | length > 0
+
+# when system updated will install this
+- block:
+  - name: Install tripleo client
+    yum:
+      name:
+        - python-tripleoclient
+    tags: install-pkgs
+
+  - name: Install ceph-ansible for external ceph
+    yum:
+      name:
+        - ceph-ansible
+    when: external_ceph == true
+    tags: install-pkgs
+  when: yumoutput.results | length == 0

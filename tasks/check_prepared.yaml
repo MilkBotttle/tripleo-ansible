@@ -4,4 +4,3 @@
     that:
       - ansible_memtotal_mb >= 7680
     msg: "Undercloud  install reqire at least 7400MB RAM"
-  

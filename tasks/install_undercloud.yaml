@@ -1,7 +1,7 @@
 ---
-- name: Copy over undercloud.conf
+- name: Generate undercloud.conf
   merge_configs:
-    sources: 
+    sources:
       - "{{ playbook_path_output.stdout }}/templates/undercloud.conf.default"
       - "{{ playbook_path_output.stdout }}/override_undercloud.conf"
     dest: /home/stack/undercloud.conf
@@ -9,13 +9,3 @@
     group: stack
     mode: 0644
   tags: create-config
-  
-- name : Install undercloud
-  shell: >
-    openstack undercloud install 
-    > undercloud-install-"{{ ansible_date_time.date }}".log 2>&1
-  become: true
-  become_user: stack
-  tags: install-undercloud
-
-

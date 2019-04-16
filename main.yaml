@@ -9,15 +9,15 @@
       tags: create-config
     - name: Check Hardware
       import_tasks: tasks/check_prepared.yaml
-    
+
     - name: Create stack user
       import_tasks: tasks/create_stack_user.yaml
-    
+
     - name: Config host
       import_tasks: tasks/setup_hostname.yaml
 
     - name: Install TripleO deps
       import_tasks: tasks/install_deps.yaml
-    
-    - name: Deploy UnderCloud
+
+    - name: Prepare config for install UnderCloud
       import_tasks: tasks/install_undercloud.yaml

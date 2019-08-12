@@ -1,0 +1,113 @@
+--- image_uploader.py	2019-07-17 17:43:54.201056181 +0800
++++ image_uploader.py.cameron	2019-07-18 11:11:03.219308922 +0800
+@@ -115,7 +115,8 @@
+         super(ImageUploadManager, self).__init__(config_files)
+         self.uploaders = {
+             'skopeo': SkopeoImageUploader(),
+-            'python': PythonImageUploader()
++            'python': PythonImageUploader(),
++            'local' : LocalImageUPloader()
+         }
+         self.dry_run = dry_run
+         self.cleanup = cleanup
+@@ -919,7 +920,6 @@
+     def upload_image(self, task):
+         t = task
+         LOG.info('imagename: %s' % t.image_name)
+-
+         target_image_local_url = parse.urlparse('containers-storage:%s' %
+                                                 t.target_image)
+         if t.dry_run:
+@@ -1661,6 +1661,92 @@
+         # repeatedly
+         self.cleanup(local_images)
+ 
++class LocalImageUPloader(PythonImageUploader):
++    """
++    Upload images from local storage to registry.
++    Modify images in local storage and upload.
++    Inspect local storage image by skopeo.
++    """
++    def upload_image(self, task):
++        t = task
++
++        LOG.info('imagename: %s' % t.image_name)
++        target_image_local_url = parse.urlparse('containers-storage:%s' %
++                                                t.target_image)
++        source_image_local_url = parse.urlparse('containers-storage:%s' %
++                                                t.source_image)
++        if t.dry_run:
++            return []
++        target_username, target_password = self.credentials_for_registry(
++            t.target_image_url.netloc)
++        target_session = self.authenticate(
++            t.target_image_url,
++            username=target_username,
++            password=target_password
++        )
++
++        self._detect_target_export(t.target_image_url, target_session)
++
++        if t.modify_role:
++            if self._image_exists(
++                    t.target_image, target_session):
++                LOG.warning('Skipping upload for modified image %s' %
++                            t.target_image)
++                return []
++            copy_target_url = t.target_image_source_tag_url
++        else:
++            copy_target_url = t.target_image_url
++
++        source_inspect = self._inspect(source_image_local_url)
++        source_layers = source_inspect.get('Layers', [])
++        self._cross_repo_mount(
++            t.target_image_url, self.image_layers, source_layers,
++            session=target_session)
++        to_cleanup = []
++
++        # Copy unmodified images from local storage to target registry
++        self._copy_local_to_registry(
++            source_image_local_url,
++            t.target_image_url,
++            session=target_session
++        )
++
++        if not t.modify_role:
++            LOG.warning('Completed upload for image %s' % t.image_name)
++        else:
++            if t.cleanup in (CLEANUP_FULL, CLEANUP_PARTIAL):
++                to_cleanup.append(t.target_image_source_tag)
++
++            self.run_modify_playbook(
++                t.modify_role,
++                t.modify_vars,
++                t.target_image_source_tag,
++                t.target_image_source_tag,
++                t.append_tag,
++                container_build_tool='buildah')
++            if t.cleanup == CLEANUP_FULL:
++                to_cleanup.append(t.target_image)
++
++            # cross-repo mount the unmodified image to the modified image
++            self._cross_repo_mount(
++                t.target_image_url, self.image_layers, source_layers,
++                session=target_session)
++
++            # Copy from local storage to target registry
++            self._copy_local_to_registry(
++                target_image_local_url,
++                t.target_image_url,
++                session=target_session
++            )
++
++            for layer in source_layers:
++                self.image_layers.setdefault(layer, t.target_image_url)
++            LOG.warning('Completed modify and upload for image %s' %
++                        t.image_name)
++        for layer in source_layers:
++            self.image_layers.setdefault(layer, t.target_image_url)
++        return to_cleanup
++
+ 
+ class UploadTask(object):
+ 

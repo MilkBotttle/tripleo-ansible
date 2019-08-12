@@ -10,6 +10,7 @@
 - name : Install undercloud
   shell: >
     openstack undercloud install
+  no_log: true
   become: true
   become_user: stack
   tags: install-undercloud

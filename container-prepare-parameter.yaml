@@ -1,0 +1,7 @@
+parameter_defaults:
+  # Set the neutron server image according different value:
+  #   - ovn: centos-binary-neutron-server-ovn
+  #   - ovs: centos-binary-neutron-server
+  NeutronMechanismDrivers: ovs
+  ContainerImagePrepare:
+  - push_destination: true

@@ -1,0 +1,43 @@
+---
+- hosts:
+  gather_facts: no
+  tasks:
+    - vars_files:
+        - install_config.yaml
+
+    - set_facts:
+        oc_images_path: "/home/stack/oc_images"
+        oc_images:
+          - "overcloud-full.tar"
+          - "ironic-python-agent.tar"
+
+    - name: Patch tripleo-client support local push
+      patch:
+        src: files/image_uploader.patch
+        dest: /usr/lib/python2.7/site-packages/tripleo_common/image/image_uploader.py
+      become: true
+
+    - name: Create local container registry
+      shell: |
+        openstack overcloud container image upload --config-file container-prepare-paremeter.yaml
+
+    - name: Create folder to save images
+      file:
+        type: directory
+        dest: "{{ oc_images_path }}"
+
+    - name: Get overcloud image
+      get_url:
+        url:  "https://images.rdoproject.org/{{tripleo_version}}/rdo_trunk/current-tripleo/{{ item }}"
+        dest: "/home/stack/oc_images/{{ item }}"
+      with_items: "{{ oc_images }}"
+
+    - name: Extract overcloud images
+      unarchive:
+        src: "{{ oc_images_path }}/{{ item }}"
+        dest: "{{ oc_images_path }}"
+      with_items: "{{ oc_images }}"
+
+    - name: Upload overcloud images
+      shell: |
+        openstack overcloud images --image-path {{oc_images_path}}

@@ -4,5 +4,5 @@
 bash tools/install_ansible
 
 #Run playbook
-ansible-playbook -b main.yaml -v $@
+ansible-playbook -b undercloud-main.yaml -v $@
 

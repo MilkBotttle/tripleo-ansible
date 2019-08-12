@@ -6,7 +6,7 @@
 # DNS nameserver(s) to use for the undercloud node. (list value)
 undercloud_nameservers: 8.8.8.8,8.8.4.4
 
-# List of ntp servers to use. (list value) 
+# List of ntp servers to use. (list value)
 undercloud_ntp_servers: 172.20.0.22
 
 # Network interface on the Undercloud that will be handling the PXE
@@ -81,7 +81,7 @@ dhcp_start: 192.168.24.5
 # instances. (string value)
 dhcp_end: 192.168.24.25
 
-#Inspection ip range use the same cidr with deploy format 
+#Inspection ip range use the same cidr with deploy format
 inspection_iprange: 192.168.24.100,192.168.24.120
 
 ###################################
@@ -95,7 +95,7 @@ offline_install: false
 external_ceph: false
 
 # TripleO version
-tripleo_version: pike
+tripleo_version: stein
 
 # Undercloud need config hostname to deploy
 # The /etc/hosts result: >
@@ -111,4 +111,4 @@ undercloud_hostname: undercloud
 
 # Install extra packages (list value)
 # eg. extra_pkgs: [vim, iperf3, sl]
-extra_pkgs: [vim, tmux]
+extra_pkgs: []

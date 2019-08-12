@@ -3,6 +3,7 @@
   vars_files:
     - vars/undercloud_install.yaml
     - vars/undercloud_services.yaml
+    - undercloud_config.yaml
   tasks:
     - name: Check Hardware
       import_tasks: tasks/check_prepared.yaml

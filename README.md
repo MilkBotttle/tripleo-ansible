@@ -2,7 +2,7 @@
 Use ansible to install undercloud at localhost.
 
 ## Version
-Pike
+Stein
 
 ## Requirement
 * Ansible >= 2.4

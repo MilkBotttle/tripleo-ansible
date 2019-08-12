@@ -17,10 +17,6 @@
         dest: /usr/lib/python2.7/site-packages/tripleo_common/image/image_uploader.py
       become: true
 
-    - name: Create local container registry
-      shell: |
-        openstack overcloud container image upload --config-file container-prepare-paremeter.yaml
-
     - name: Create folder to save images
       file:
         type: directory
@@ -40,4 +36,10 @@
 
     - name: Upload overcloud images
       shell: |
-        openstack overcloud images --image-path {{oc_images_path}}
+        source ~/stackrc
+        openstack overcloud image upload --image-path {{oc_images_path}}
+
+    - name: Create local container registry
+      shell: |
+        source ~/stackrc
+        openstack overcloud container image upload --config-file container-prepare-paremeter.yaml

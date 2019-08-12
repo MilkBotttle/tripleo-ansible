@@ -1,0 +1,8 @@
+#!/bin/bash 
+
+#Install ansible
+bash tools/install_ansible
+
+#Run playbook
+ansible-playbook -b main.yaml -v $@
+

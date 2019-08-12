@@ -1,7 +1,0 @@
----
-- name: Check service all running
-  service:
-    name: "{{ item }}"
-    state: started
-  with_items: "{{ undercloud_services }}"
-  tags: verify_undercloud

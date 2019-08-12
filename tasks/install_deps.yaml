@@ -14,10 +14,12 @@
   become: true
   when: offline_install == false
 
-- name: Install tripleo client
+- name: Install tripleo pkgs
   yum:
     name:
       - python-tripleoclient
+      - crudini
+      - python2-osprofiler
 
 - name: Install ceph-ansible for external ceph
   yum:

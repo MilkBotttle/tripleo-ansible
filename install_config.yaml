@@ -1,0 +1,21 @@
+---
+####################################
+# Deploy undercloud ansible variable
+####################################
+# Offline
+offline_install: false
+
+# Undercloud will install ceph-ansible for use external ceph
+# (boolean)
+external_ceph: false
+
+# TripleO version
+tripleo_version: stein
+
+#############################################
+# Undercloud install extra packages (options)
+#############################################
+
+# Install extra packages (list value)
+# eg. extra_pkgs: [vim, iperf3, sl]
+extra_pkgs: []

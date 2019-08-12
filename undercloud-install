@@ -1,7 +1,11 @@
 #!/bin/bash 
 
 #Install ansible
-bash tools/install_ansible
+rpm -qa | grep -q ansible
+if [ "$?" -ne "0" ]; then
+  echo "Install Ansible"
+  bash tools/install_ansible
+fi
 
 #Run playbook
 ansible-playbook -b main.yaml -v $@

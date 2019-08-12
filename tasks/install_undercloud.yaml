@@ -1,14 +1,11 @@
 ---
 - name: Create undercloud.conf
-  file:
-    path: /home/stack/undercloud.conf
-    state: touch
-
-- name: Insert options to undercloud.conf
-  shell: |
-    crudini --merge /home/stack/undercloud.conf < templates/undercloud.conf.origin
-    crudini --merge /home/stack/undercloud.conf < undercloud.conf
-  tags: create_config
+  copy:
+    src: undercloud.conf
+    dest: /home/stack/undercloud.conf
+    owner: stack
+    group: stack
+  tags: uc_prepare
 
 - name : Install undercloud
   shell: >

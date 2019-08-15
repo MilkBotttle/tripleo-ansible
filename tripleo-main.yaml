@@ -9,4 +9,5 @@
   hosts: localhost
   gather_facts: no
   roles:
+    - role: overcloud/validate
     - role: overcloud/prepare

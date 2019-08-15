@@ -1,0 +1,9 @@
+
+
+
+
+- name: Create network config
+  template:
+    src: "nic-configs/{{ item }}.j2"
+    dest: "{{ nic_config_path }}/{{ item }}"
+  with_items: "{{ network_configs }}"

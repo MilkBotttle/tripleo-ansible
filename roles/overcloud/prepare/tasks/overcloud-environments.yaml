@@ -1,7 +1,46 @@
 ---
+- include_vars:
+    dir: config/overcloud-environments
 
-- name: Create 00-node-info.yaml
+- name: Create folders
+  file:
+    state: directory
+    dest: "{{ item }}"
+  with_items:
+    - base_path
+    - environment_path
+    - nic_config_path
+
+- name: Create network data
   template:
-    src: templates/environments/00-node-info.yaml.j2
-    dest: {{ environment_path }}/00-node-info.yaml
-  
+    src: network-data.yaml.j2
+    dest: {{ base_path }}/network-data.yaml
+
+- name: Create roles data
+  shell: |
+    openstack overcloud roles generate Controller Compute -o {{base_path}}/roles_data.yaml
+
+- name: Generate THT
+  shell: |
+    /usr/share/openstack-tripleo-heat-templates/tools/process-templates.py \
+    -p /usr/share/openstack-tripleo-heat-templates \
+    -r {{ base_path }}/roles_data.yaml \
+    -n {{ base_path }}/network_data.yaml \
+    -o {{ base_path }}/THT --safe
+
+
+- name: Create ha deploy environment
+  copy:
+    src: files/docker-ha.yaml
+    dest: {{ environment_path }}/01-docker-ha.yaml
+  when: ControllerCount > 2
+
+- name: Create environments
+  template:
+    src: "environments/{{ item }}.j2"
+    dest: "{{ environment_path }}/{{ item }}"
+  with_items: "{{ environments_name }}"
+
+- name: Create network config
+  include_role: overcloud/network-config
+

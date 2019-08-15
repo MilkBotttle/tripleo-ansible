@@ -1,0 +1,7 @@
+- copy:
+    src: files/a.j2
+    dest: /tmp/t.j2
+- template:
+    src: /tmp/t.j2
+    dest: /tmp/ttt.yaml
+  

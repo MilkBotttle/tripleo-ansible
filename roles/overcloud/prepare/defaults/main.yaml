@@ -5,8 +5,18 @@ oc_images:
   - "ironic-python-agent.tar"
 
 # Directory path to save overcloud requirement files.
-base_path: "/home/{{ undercloud_none_root_username }}"
-overcloud_name: "overcloud-{{tripleo_release}}"
+overcloud_name: "{{ tripleo_release }}cloud"
+base_path: "/home/{{ undercloud_none_root_username }}/{{overcloud_name}}"
 environment_path: "{{ base_path }}/environments"
 tht_path: "{{ base_path }}/THT"
+nic_config_path: "{{ base_path }}/nic-configs"
+environments_name:
+  - "00-node-info.yaml"
+  - "15-scheduler-hints.yaml"
+  - "20-network-environment.yaml"
+  - "99-extra-config.yaml"
+
+network_configs_name:
+  - "controller.yaml"
+  - "compute.yaml"
 

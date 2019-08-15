@@ -1,0 +1,10 @@
+resource_registry:
+	OS::TripleO::Compute::Net::SoftwareConfig: ../nic-configs/compute.yaml
+	OS::TripleO::Controller::Net::SoftwareConfig: ../nic-configs/controller.yaml
+{% if enable_compute_external %}
+	OS::TripleO::Compute::Ports::ExternalPort:  ../THT/network/ports/external.yaml
+	OS::TripleO::Compute::Ports::StorageMgmtPort:  ../THT/network/ports/storage_mgmt.yaml
+{% endif %}
+
+parameter_defaults:
+	DnsServers: ["8.8.8.8"]

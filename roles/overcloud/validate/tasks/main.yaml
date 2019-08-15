@@ -1,0 +1,7 @@
+---
+- name: Validate config value are avaliable
+  assert:
+    that:
+      - ControllerCount is not divisibleby 2
+  tags:
+    - oc_config_validate

@@ -1,0 +1,37 @@
+parameter_defaults:
+  ControllerSchedulerHints: 
+    'capabilities:node': {{ ControllerSchedulerHints }}
+  ComputeSchedulerHints: 
+    'capabilities:node': {{ ComputeSchedulerHints }}
+  
+  HostnameMap:
+{% for hostname in ControllerHostnameMap %}
+    {{ ovrcloudname }}-controller-{{ loop.index0 }}: {{ hostname }}
+{% endfor %}
+{% for hostname in ComputeHostNameMap %}
+    {{ overcloud_name }}-compute-{{ loop.index0 }}: {{ hostname }}
+{% endfor %}
+
+  # The DNS domain used for the hosts. This must match the overcloud_domain_name configured on the undercloud.
+  # Type: string
+  CloudDomain: {{ CloudDomain | default("ops.local") }}
+
+  # The DNS name of this cloud. E.g. ci-overcloud.tripleo.org
+  # Type: string
+  CloudName: {{ CloudName | default("overcloud.ops.local") }}
+
+  # The DNS name of this cloud's provisioning network endpoint. E.g. 'ci-overcloud.ctlplane.tripleo.org'.
+  # Type: string
+  CloudNameCtlplane: {{ CloudNameCtlplane | default("overcloud.ctlplane.ops.local") }}
+
+  # The DNS name of this cloud's internal API endpoint. E.g. 'ci-overcloud.internalapi.tripleo.org'.
+  # Type: string
+  CloudNameInternal: {{ CloudNameInternal | default("overcloud.internalapi.ops.local") }}
+
+  # The DNS name of this cloud's storage endpoint. E.g. 'ci-overcloud.storage.tripleo.org'.
+  # Type: string
+  CloudNameStorage: {{ CloudNameStorage | default("overcloud.storage.ops.local") }}
+
+  # The DNS name of this cloud's storage management endpoint. E.g. 'ci-overcloud.storagemgmt.tripleo.org'.
+  # Type: string
+  CloudNameStorageManagement: {{ CloudNameStorageManagement | default("overcloud.storagemgmt.ops.local") }}

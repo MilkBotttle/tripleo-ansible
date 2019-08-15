@@ -1,5 +1,5 @@
-# Ansible install Undercloud
-Use ansible to install undercloud
+# Ansible install TripleO
+Use ansible to prepare TripleO and install
 
 ## Version
 Stein
@@ -24,4 +24,9 @@ undercloud.
 2. Prepare undercloud without installation.
 `bash undercloud-install --tag uc_prepare`
 3. Run install undercloud only
-`bash undercloud-install --tag install-undercloud
+`bash undercloud-install --tag install-undercloud`
+
+## How to install Overcloud
+1. Prepare install
+Play `overcloud-main.yaml` with `prepare_oc` tag to setup environment 
+for deploy overcloud

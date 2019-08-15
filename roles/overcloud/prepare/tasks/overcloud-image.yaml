@@ -1,0 +1,21 @@
+- name: Create folder to save images
+  file:
+    state: directory
+    dest: "{{ oc_images_path }}"
+
+- name: Get overcloud image
+  get_url:
+    url:  "https://images.rdoproject.org/{{tripleo_release}}/rdo_trunk/current-tripleo/{{ item }}"
+    dest: "/home/stack/oc_images/{{ item }}"
+  with_items: "{{ oc_images }}"
+
+- name: Extract overcloud images
+  unarchive:
+    src: "{{ oc_images_path }}/{{ item }}"
+    dest: "{{ oc_images_path }}"
+  with_items: "{{ oc_images }}"
+
+- name: Upload overcloud images
+  shell: |
+    source ~/stackrc
+    openstack overcloud image upload --image-path {{oc_images_path}} --update-existing

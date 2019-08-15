@@ -1,0 +1,26 @@
+---
+#########################
+# Deploy TripleO variable
+#########################
+# Offline
+offline_install: false
+
+# TripleO release
+tripleo_release: stein
+
+# The undercloud used none root user
+undercloud_none_root_username: stack
+undercloud_none_root_user_password: password
+
+# Overloud configuration
+controller_count: 1
+compute_count: 1
+
+
+################################################
+# Install extra packages on undercloud (options)
+################################################
+
+# Install extra packages (list value)
+# eg. extra_pkgs: [vim, iperf3, sl]
+extra_pkgs: []

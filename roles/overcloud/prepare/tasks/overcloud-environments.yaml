@@ -1,0 +1,7 @@
+---
+
+- name: Create 00-node-info.yaml
+  template:
+    src: templates/environments/00-node-info.yaml.j2
+    dest: {{ environment_path }}/00-node-info.yaml
+  

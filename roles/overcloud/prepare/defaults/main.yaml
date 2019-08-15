@@ -1,0 +1,12 @@
+# Overcloud disk images.
+oc_images_path: "{{ base_path }}/oc_images"
+oc_images:
+  - "overcloud-full.tar"
+  - "ironic-python-agent.tar"
+
+# Directory path to save overcloud requirement files.
+base_path: "/home/{{ undercloud_none_root_username }}"
+overcloud_name: "overcloud-{{tripleo_release}}"
+environment_path: "{{ base_path }}/environments"
+tht_path: "{{ base_path }}/THT"
+

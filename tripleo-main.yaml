@@ -1,0 +1,12 @@
+---
+- name: Install undercloud
+  hosts: localhost
+  gather_facts: yes
+  roles:
+    - undercloud
+
+- name: Prepare install Overcloud
+  hosts: localhost
+  gather_facts: no
+  roles:
+    - role: overcloud/prepare

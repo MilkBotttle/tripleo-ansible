@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - debug:
+
+- hosts: localhost
+  gather_facts: no
+  roles:
+    - role: test-role
+      mesg: "AAAA"

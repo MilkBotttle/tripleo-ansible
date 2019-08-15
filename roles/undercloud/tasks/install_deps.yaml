@@ -20,6 +20,8 @@
       - python-tripleoclient
       - crudini
       - python2-osprofiler
+      - patch
+      - ipmitool
 
 - name: Install ceph-ansible for external ceph
   yum:

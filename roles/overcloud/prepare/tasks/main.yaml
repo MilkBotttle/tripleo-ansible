@@ -1,0 +1,23 @@
+---
+- name: Patch tripleo-client support local push
+  patch:
+    src: files/image_uploader.patch
+    dest: /usr/lib/python2.7/site-packages/tripleo_common/image/image_uploader.py
+  become: true
+  become_user: root
+  tags: always
+
+- include_tasks: overcloud-image.yaml
+  tags: 
+   - prepare-oc-images
+   - prepare_oc
+
+- include_tasks: overcloud-container-image.yaml
+  tags: 
+    - prepare-oc-container-images
+    - prepare_oc
+
+- include_tasks: overcloud-environments.yaml
+  tags:
+    - prepare_oc
+

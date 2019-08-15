@@ -1,0 +1,1 @@
+ansible-playbook -b --become-user=stack overcloud-main.yaml -e @install_config.yaml -v $@

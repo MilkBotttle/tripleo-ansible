@@ -1,0 +1,10 @@
+---
+- name: Create container-prepare-paremeter.yaml
+  copy:
+    src: container-prepare-parameter.yaml
+    dest: /home/stack/container-prepare-paremeter.yaml
+
+- name: Create local container registry
+  shell: |
+    source ~/stackrc
+    openstack tripleo container image upload --config-file /home/stack/container-prepare-paremeter.yaml

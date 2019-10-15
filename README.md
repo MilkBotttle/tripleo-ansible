@@ -1,8 +1,8 @@
-# Ansible install Undercloud
-Use ansible to install undercloud at localhost.
+# Ansible prepare install Undercloud
+Use ansible to prepare install undercloud at localhost.
 
 ## Version
-Pike
+Rocky
 
 ## Requirement
 * Ansible >= 2.4
@@ -11,9 +11,6 @@ Pike
 
 ## Install Ansible
 Use tools/install_ansible shell script.
-
-## Prepare tripleo repo file if not exist
-Use tools/get_tripleo_repo shell script.
 
 ## Quick Start
 Play at localhost as below:

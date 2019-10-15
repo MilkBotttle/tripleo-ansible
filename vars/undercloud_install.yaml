@@ -1,7 +1,0 @@
----
-#Vars for undercloud install
-tripleo_version: pike
-undercloud_fqdn: undercloud.inwinstakc.com
-undercloud_hostname: undercloud
-python_tripleo_repo: python2-tripleo-repos-0.0.1-0.20180418175107.ef4e12e.el7.centos.noarch.rpm
-

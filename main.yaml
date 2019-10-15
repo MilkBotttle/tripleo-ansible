@@ -1,8 +1,5 @@
 ---
 - hosts: localhost
-  vars_files:
-    - vars/undercloud_install.yaml
-    - vars/undercloud_services.yaml
   tasks:
     - name: Check Hardware
       import_tasks: tasks/check_prepared.yaml
@@ -10,14 +7,5 @@
     - name: Create stack user
       import_tasks: tasks/create_stack_user.yaml
 
-    - name: Config host
-      import_tasks: tasks/setup_hostname.yaml
-
     - name: Install TripleO deps
       import_tasks: tasks/install_deps.yaml
-    
-    - name: Deploy UnderCloud
-      import_tasks: tasks/install_undercloud.yaml
-    
-    - name: Verify UnderCloud
-      import_tasks: tasks/verify_undercloud.yaml

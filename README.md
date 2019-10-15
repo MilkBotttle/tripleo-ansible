@@ -12,15 +12,11 @@ Rocky
 ## Install Ansible
 Use tools/install_ansible shell script.
 
-## Quick Start
-Play at localhost as below:
-1. Configure the `undercloud_config.yaml`.
-2. Install undercloud with root user `ansible-playbook -e "@undercloud_config.yaml" main.yaml`.
+## Start Prepare system
+1. Run `ansible-playbook main.yaml`
 
-# Ansible backup controller
-Play run on a controller:
-`ansible-playbook -i [controller-hostname/ip], backup_overcloud.yaml`
+## Install undercloud 
+After prepare complete use `stack` user and edit `undercloud.conf` at
+home folder. Than run `openstack undercloud install`
 
-# Ansible backup undercloud
-Play run on undercloud:
-`ansible-playbook backup_undercloud.yaml`
+

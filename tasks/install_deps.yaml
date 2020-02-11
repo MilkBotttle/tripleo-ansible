@@ -22,6 +22,6 @@
 - name: Copy sample config for stack user
   copy:
     src: /usr/share/python-tripleoclient/undercloud.conf.sample
-    dest: /usr/home/stack/undercloud.conf.sample
+    dest: /home/stack/undercloud.conf.sample
     group: stack
     owner: stack

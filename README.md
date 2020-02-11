@@ -13,9 +13,14 @@ Rocky
 Use tools/install_ansible shell script.
 
 ## Start Prepare system
-1. Run `ansible-playbook main.yaml`
+1. Add vars.yml
+```
+offline_install: false
+tripleo_version: stein
+```
+2. Run `ansible-playbook main.yaml -e @vars.yml`
 
-## Install undercloud 
+## Install undercloud
 After prepare complete use `stack` user and edit `undercloud.conf` at
 home folder. Than run `openstack undercloud install`
 
